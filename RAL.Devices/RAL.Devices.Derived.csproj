@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Stateless" Version="4.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Collector\RAL.Collector.csproj" />
+    <ProjectReference Include="..\RAL.Devices.Core\Devices.Core.csproj" />
+    <ProjectReference Include="..\RAL.Utilities\TheColonel2688.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

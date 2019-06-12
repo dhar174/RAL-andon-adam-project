@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>RAL.RulesEngine</AssemblyName>
+    <RootNamespace>RAL.RulesEngine</RootNamespace>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="RulesFactory.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentScheduler" Version="5.3.0" />
+    <PackageReference Include="InfluxData.Net" Version="8.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Repository\RAL.Repository.csproj" />
+    <ProjectReference Include="..\RAL.RulesEngine.Interf\RAL.Rules.Interfaces.csproj" />
+    <ProjectReference Include="..\RAL.Utilities\TheColonel2688.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

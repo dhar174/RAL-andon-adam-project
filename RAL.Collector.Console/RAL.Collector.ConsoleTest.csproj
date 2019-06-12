@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Collection.Mocks\RAL.Collector.Mocks.csproj" />
+    <ProjectReference Include="..\RAL.Collector\RAL.Collector.csproj" />
+    <ProjectReference Include="..\RAL.Factory\RAL.Factory.csproj" />
+    <ProjectReference Include="..\RAL.Utilities\RAL.Utilities.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="machineSubsriptions.xml.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+</Project>

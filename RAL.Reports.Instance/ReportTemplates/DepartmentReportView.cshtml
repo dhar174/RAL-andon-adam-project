@@ -1,0 +1,77 @@
+﻿@using RAL.Reports;
+@using RazorLight
+@inherits TemplatePage<DepartmentReportViewModel>
+
+
+<div style="align-content:center; width: 100%; font-size:32px">@Model.Title</div>
+
+<br />
+<div style="align-content:">Summary</div>
+<table id="SummaryTable" class="table" cellpadding="5">
+    <thead>
+        <tr>
+            <th>Line</th>
+            <th>Machine</th>
+            <th>Total Down Time</th>
+            <th>Total Down Time as %</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var machine in Model.MachineStates)
+        {
+            <tr>
+                <td>
+                    @machine.MachineInfo.Line
+                </td>
+                <td>
+                    @machine.MachineInfo.Name
+                </td>
+                <td>
+                    @machine.States.TotalTimeWhere(x => x.State == false)
+                </td>
+                <td>
+                    @machine.States.PercentOfTotalWhere(x => x.State == false).ToString("P")
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<br />
+
+
+@foreach (var machine in Model.MachineStates)
+{
+    <p>@machine.MachineInfo.Line @machine.MachineInfo.Name</p>
+    <p>Total Down Time @machine.States.TotalTimeWhere(x => x.State == false)</p>
+    <p>Total Down as Percentage @machine.States.PercentOfTotalWhere(x => x.State == false).ToString("P")</p>
+    <table id="myTable" class="table" cellspacing="0">
+        <thead>
+            <tr>
+                <th>
+                    From
+                </th>
+                <th>
+                    To
+                </th>
+                <th>
+                    Was Running?
+                </th>
+                <th>
+                    Time Span
+                </th>
+            </tr>
+        <tbody>
+            @foreach (var state in machine.States)
+            {
+                <tr>
+                    <td>@state.Start.ToShortTimeString()</td>
+                    <td>@state.End.ToShortTimeString()</td>
+                    <td>@state.State</td>
+                    <td>@state.TimeSpan</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+

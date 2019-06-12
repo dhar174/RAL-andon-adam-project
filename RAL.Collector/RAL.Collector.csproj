@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="InfluxDB.Collector" Version="1.1.0" />
+    <PackageReference Include="MQTTnet" Version="2.8.5" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Repository\RAL.Repository.csproj" />
+    <ProjectReference Include="..\RAL.Utilities\TheColonel2688.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

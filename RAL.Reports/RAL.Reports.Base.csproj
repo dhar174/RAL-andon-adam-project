@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+    <PreserveCompilationContext>true</PreserveCompilationContext>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FluentEmail.Razor" Version="2.5.2" />
+    <PackageReference Include="FluentEmail.Smtp" Version="2.5.2" />
+    <PackageReference Include="Serilog" Version="2.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Repository\RAL.Repository.csproj" />
+    <ProjectReference Include="..\RAL.Utilities\TheColonel2688.Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

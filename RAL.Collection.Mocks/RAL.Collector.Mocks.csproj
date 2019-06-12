@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Collector\RAL.Collector.csproj" />
+    <ProjectReference Include="..\RAL.Devices.Core\Devices.Core.csproj" />
+  </ItemGroup>
+
+</Project>

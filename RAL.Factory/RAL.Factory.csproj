@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL.Andon\RAL.RulesEngine.csproj" />
+    <ProjectReference Include="..\RAL.Collector\RAL.Collector.csproj" />
+    <ProjectReference Include="..\RAL.ConfigStorage\RAL.ConfigStorageTypes.csproj" />
+    <ProjectReference Include="..\RAL.Reports\RAL.Reports.csproj" />
+  </ItemGroup>
+
+</Project>

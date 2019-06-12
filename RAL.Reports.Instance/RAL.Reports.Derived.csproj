@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <LangVersion>7.3</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="DepartmentReportView.cshtml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="ReportTemplates\DepartmentReportView.cshtml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RAL.Reports\RAL.Reports.Base.csproj" />
+  </ItemGroup>
+
+</Project>

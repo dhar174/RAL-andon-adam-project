@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DAL.Andon\RAL.Rules.Core.csproj" />
+    <ProjectReference Include="..\RAL.Collector\RAL.Collector.csproj" />
+  </ItemGroup>
+
+</Project>
