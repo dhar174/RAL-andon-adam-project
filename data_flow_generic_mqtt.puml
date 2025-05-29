@@ -1,0 +1,24 @@
+@startuml data_flow_generic_mqtt
+!theme vibrant
+
+title Data Flow: Generic MQTT Client
+
+actor "External MQTT Publisher" as Publisher
+participant "Embedded MQTT Broker\n(RAL.Collector)" as Broker
+participant "MessageProcessor\n(RAL.Collector)" as Processor
+participant "Custom IMachineClient\nForMQTTCollector" as CustomClient
+database "IMachineRepository\n(InfluxDB)" as Repo
+participant "Application Logic" as AppLogic
+
+Publisher -> Broker : Publish MQTT Message (Custom Topic/Payload)
+Broker -> Processor : Forward MQTT Message
+Processor -> CustomClient : Invoke ITopicMessageHandler.Process(payload)
+CustomClient -> CustomClient : Parse Payload
+CustomClient -> CustomClient : Convert to Internal Format
+alt
+  CustomClient -> Repo : WriteAsync(data)
+else
+  CustomClient -> AppLogic : Trigger Logic / Raise Event
+end
+
+@enduml

@@ -1,0 +1,59 @@
+@startuml overall_component_diagram
+!theme vibrant
+
+package "Configuration" {
+  [UserConfiguration.cs] <<Script>>
+}
+
+package "Application Core" {
+  [RAL.EntryPoint]
+  [RAL.Manager]
+}
+
+package "Data Acquisition" {
+  [RAL.Collector] <<MQTT Broker>>
+  package "Device Clients" <<Folder>> {
+    [Adam6051Client] <<MQTT Client>>
+    [GenericMQTTClient] <<Concept>>
+  }
+}
+
+package "Data Processing & Logic" {
+  [DAL.Andon (Rules Engine)]
+  [RAL.Manager.Machine]
+}
+
+package "Data Persistence" {
+  [RAL.Repository] <<InfluxDB>>
+}
+
+package "Reporting" {
+  [RAL.Reports]
+}
+
+[UserConfiguration.cs] --> [RAL.EntryPoint] : Loads
+[RAL.EntryPoint] --> [RAL.Manager] : Creates & Starts
+
+[RAL.Manager] o-- [RAL.Collector]
+[RAL.Manager] o-- [DAL.Andon (Rules Engine)]
+[RAL.Manager] o-- [RAL.Reports]
+[RAL.Manager] o-- [RAL.Manager.Machine] : Manages Instances
+
+[RAL.Manager.Machine] ..> [Adam6051Client] : Uses
+[RAL.Manager.Machine] ..> [RAL.Repository] : Writes to / Reads from
+[RAL.Manager.Machine] ..> [DAL.Andon (Rules Engine)] : Provides data/context
+
+[Adam6051Client] --> [RAL.Collector] : Connects & Subscribes (via MessageProcessor)
+[GenericMQTTClient] --> [RAL.Collector] : Connects & Subscribes (via MessageProcessor)
+
+[RAL.Collector] ..> [RAL.Repository] : (Clients may write to)
+
+[DAL.Andon (Rules Engine)] ..> [RAL.Repository] : Reads from
+[DAL.Andon (Rules Engine)] ..> [RAL.Devices.StackLights] : Controls (Action)
+
+[RAL.Reports] ..> [RAL.Repository] : Reads from
+
+note "Physical Adam Device (MQTT Publisher)" as AdamDevice
+AdamDevice --> [RAL.Collector] : Publishes Data
+
+@enduml

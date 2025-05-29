@@ -1,0 +1,32 @@
+@startuml data_flow_adam6051_mqtt
+!theme vibrant
+
+title Data Flow: Adam-6051 Machine (via MQTT)
+
+actor "Adam-6051 Device" as Device
+participant "Embedded MQTT Broker\n(RAL.Collector)" as Broker
+participant "MessageProcessor\n(RAL.Collector)" as Processor
+participant "Adam6051Client\n(RAL.Devices)" as AdamClient
+participant "RAL.Manager.Machine" as MachineObj
+participant "IMachineStatus\nPayloadConverter" as Converter
+database "IMachineRepository\n(InfluxDB)" as Repo
+participant "Rule Engine\n(DAL.Andon)" as Rules
+actor "StackLight" as Light
+
+Device -> Broker : Publish MQTT Msg (Topic: Advantech/{MAC}/data)
+Broker -> Processor : Forward MQTT Message
+Processor -> AdamClient : Invoke TopicHandler.Process(payload)
+AdamClient -> MachineObj : Raise C# Event (e.g., StatusReceived)
+MachineObj -> Converter : ConvertPayload(rawPayload)
+Converter --> MachineObj : Return MachineStatusMessage
+alt StatusIsChanged?
+  MachineObj -> Repo : WriteAsync(MachineStatusInflux)
+end
+Rules -> Repo : Query Machine Data
+Rules -> Rules : Evaluate Rule (e.g., RuleMachineIsRunning)
+alt Rule Condition Met (e.g., Machine Not Running)
+  Rules -> Light : ControlLight() (Action)
+  Rules -> Repo : WriteAsync(RuleResult) (Action)
+end
+
+@enduml
