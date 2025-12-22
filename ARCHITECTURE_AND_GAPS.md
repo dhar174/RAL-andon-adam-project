@@ -28,27 +28,27 @@
 ## Key Gaps / Risks (with evidence and recommendations)
 
 1) **Shutdown leaves scheduler running**  
-   - Evidence: `Manager.WaitForClose()` awaits collector and rules only, never stops `ReportsManager`/FluentScheduler (`RAL.Manager/Manager.cs`, lines 35-46).  
+   - Evidence: `Manager.WaitForClose()` awaits collector and rules only, never stops `ReportsManager`/FluentScheduler (`RAL.Manager/Manager.cs`).  
    - Impact: Background report jobs continue after shutdown signals, risking orphaned tasks and process hangs.  
    - Recommendation: Add a close/stop path for `ReportsManager` (or `JobManager.StopAndBlock()`) and wait on it inside `WaitForClose()`.
 
 2) **Status change detection ignores most state**  
-   - Evidence: `Machine.StatusIsChanged` only compares `IsCycling` and ignores `IsFaulted`/`IsInAutomatic` (`RAL.Manager/Machine.cs`, lines 142-147).  
+   - Evidence: `Machine.StatusIsChanged` only compares `IsCycling` and ignores `IsFaulted`/`IsInAutomatic` (`RAL.Manager/Machine.cs`).  
    - Impact: Fault/automation changes are never persisted; downstream rules and reports get stale data, undermining reliability of KPIs and alerts.  
    - Recommendation: Expand change detection to all relevant fields (faulted/auto/connectivity), or persist every sample with deduplication at the repository layer.
 
 3) **Async void event handler drops exceptions**  
-   - Evidence: `_adam6051PressClient_StatusReceived` is `async void` and performs repository writes (`RAL.Manager/Machine.cs`, lines 89-126).  
+   - Evidence: `_adam6051PressClient_StatusReceived` is `async void` and performs repository writes (`RAL.Manager/Machine.cs`).  
    - Impact: Exceptions are unobserved and can terminate the process; failed writes are silently ignored except for logging, making reliability dependent on log monitoring.  
    - Recommendation: Change to `async Task` handlers (or queue work) and await in the event pipeline; add retry/backoff around repository writes.
 
 4) **Report scheduler depends on unvalidated required config**  
-   - Evidence: `LoadConfiguration` only guards against `EmailReportConfigs` being null (lines 276-279) and otherwise schedules hourly/shift reports for every department without checking for emptiness, duplicates, or invalid time windows (`RAL.EntryPoint/Configuration.cs`, lines 276-391).  
+   - Evidence: `LoadConfiguration` only guards against `EmailReportConfigs` being null and otherwise schedules hourly/shift reports for every department without checking for emptiness, duplicates, or invalid time windows (`RAL.EntryPoint/Configuration.cs`).  
    - Impact: Misconfigured user scripts can crash startup or schedule overlapping jobs; hard-coded start times make timezone/shift changes brittle.  
    - Recommendation: Validate report configs for completeness, uniqueness, and time windows before scheduling; surface user-friendly errors and allow configurable start windows.
 
 5) **Hard-coded database defaults and credentials**  
-   - Evidence: Fallback DB connection uses baked-in IP/username/password when user config omits values (`RAL.EntryPoint/Configuration.cs`, lines 163-176).  
+   - Evidence: Fallback DB connection uses baked-in IP/username/password when user config omits values (`RAL.EntryPoint/Configuration.cs`).  
    - Impact: Security exposure (plaintext credentials) and accidental connection to production-like endpoints if user config is incomplete.  
    - Recommendation: Require explicit database configuration; if missing, fail fast with clear errors and move secrets to secure configuration (env/KeyVault).
 
