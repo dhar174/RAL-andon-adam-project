@@ -43,7 +43,7 @@
    - Recommendation: Change to `async Task` handlers (or queue work) and await in the event pipeline; add retry/backoff around repository writes.
 
 4) **Report scheduler depends on unvalidated required config**  
-   - Evidence: `LoadConfiguration` throws if `EmailReportConfigs` is null but not empty/complete; schedules default hourly/shift reports for every department without guarding for duplicates or time validity (`RAL.EntryPoint/Configuration.cs`, lines 276-391).  
+   - Evidence: `LoadConfiguration` only guards against `EmailReportConfigs` being null (lines 276-279) and otherwise schedules hourly/shift reports for every department without checking for emptiness, duplicates, or invalid time windows (`RAL.EntryPoint/Configuration.cs`, lines 276-391).  
    - Impact: Misconfigured user scripts can crash startup or schedule overlapping jobs; hard-coded start times make timezone/shift changes brittle.  
    - Recommendation: Validate report configs for completeness, uniqueness, and time windows before scheduling; surface user-friendly errors and allow configurable start windows.
 
@@ -53,10 +53,9 @@
    - Recommendation: Require explicit database configuration; if missing, fail fast with clear errors and move secrets to secure configuration (env/KeyVault).
 
 6) **Test suite currently blocked by missing runtime**  
-   - Evidence: `dotnet test RAL.Solution.sln` fails because `Microsoft.NETCore.App 2.1.0`/2.2.0 is not installed in the environment.  
+   - Evidence: `dotnet test RAL.Solution.sln` fails because `Microsoft.NETCore.App` 2.1/2.2 is not installed; NU1902/NU1903 warnings reference known GHSA advisories (e.g., GHSA-6px8-22w5-w334, GHSA-g5vf-38cp-4px9 for Microsoft.NETCore.App; GHSA-5crp-9r3c-p9vr for Newtonsoft.Json 12.0.1).  
    - Impact: CI/CD cannot validate regressions; vulnerability warnings (NU1902/NU1903) remain unaddressed.  
    - Recommendation: Modernize target frameworks (>= net6.0), or install the required runtimes in CI; update vulnerable dependencies (e.g., Newtonsoft.Json 12.0.1).
 
 ## Test Notes
 - `dotnet test RAL.Solution.sln` (in repo root) aborts: missing runtime `Microsoft.NETCore.App` 2.1/2.2; multiple NU1902/NU1903 vulnerability warnings observed.
-
