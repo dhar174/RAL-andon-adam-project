@@ -53,7 +53,7 @@
    - Recommendation: Require explicit database configuration; if missing, fail fast with clear errors and move secrets to secure configuration (env/KeyVault).
 
 6) **Test suite currently blocked by missing runtime**  
-   - Evidence: `dotnet test RAL.Solution.sln` fails because `Microsoft.NETCore.App` 2.1/2.2 is not installed. NU1902/NU1903 warnings also reference known GHSA advisories (e.g., GHSA-6px8-22w5-w334, GHSA-g5vf-38cp-4px9 for Microsoft.NETCore.App; GHSA-5crp-9r3c-p9vr for Newtonsoft.Json 12.0.1).  
+   - Evidence: `dotnet test RAL.Solution.sln` fails because `Microsoft.NETCore.App` 2.1/2.2 is not installed. NU1902/NU1903 warnings reference GHSA advisories including GHSA-6px8-22w5-w334 and GHSA-g5vf-38cp-4px9 for Microsoft.NETCore.App, and GHSA-5crp-9r3c-p9vr for Newtonsoft.Json 12.0.1.  
    - Impact: CI/CD cannot validate regressions; vulnerability warnings (NU1902/NU1903) remain unaddressed.  
    - Recommendation: Modernize target frameworks (>= net6.0), or install the required runtimes in CI; update vulnerable dependencies (e.g., Newtonsoft.Json 12.0.1).
 
