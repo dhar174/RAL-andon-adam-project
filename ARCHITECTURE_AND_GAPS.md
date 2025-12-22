@@ -23,7 +23,7 @@
   - `MachineRepository` and related repositories (InfluxDB via Vibrant.InfluxDB) persist status, connectivity, and “is running” metrics. `Machine` writes status upon changes; rules write derived metrics (e.g., `RuleActionWriteIsRunning`).
 
 - **Devices & UI**  
-  - Device abstractions live in `RAL.Devices.*` and stack light integrations in `RAL.Devices.StackLights`. Real-time UI (console/WPF) projects consume view models in `RAL.RealTime.*` (not wired in the main entrypoint flow).
+  - Device abstractions live in `RAL.Devices.*` and stack light integrations in `RAL.Devices.StackLights`. Real-time UI (console/WPF) projects consume view models in `RAL.RealTime.*` (not wired in the main entry point flow).
 
 ## Key Gaps / Risks (with evidence and recommendations)
 
