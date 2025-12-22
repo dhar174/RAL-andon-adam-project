@@ -33,7 +33,7 @@
    - Recommendation: Add a close/stop path for `ReportsManager` (or `JobManager.StopAndBlock()`) and wait on it inside `WaitForClose()`.
 
 2) **Status change detection ignores most state**  
-   - Evidence: `Machine.StatusIsChanged` only compares `IsCycling` and ignores `IsFaulted`/`IsInAutomatic` (`RAL.Manager/Machine.cs`).  
+   - Evidence: `MachineStatusMessage` defines `IsCycling`, `IsInAutomatic`, and `IsFaulted` (`RAL.Collector/MachineStatusMessage.cs`), but `Machine.StatusIsChanged` only compares `IsCycling` (`RAL.Manager/Machine.cs`).  
    - Impact: Fault/automation changes are never persisted; downstream rules and reports get stale data, undermining reliability of KPIs and alerts.  
    - Recommendation: Expand change detection to all relevant fields (faulted/auto/connectivity), or persist every sample with deduplication at the repository layer.
 
