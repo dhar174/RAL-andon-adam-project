@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AutoMapper" Version="8.0.0" />
+    <PackageReference Include="AutoMapper" Version="15.1.1" />
     <PackageReference Include="InfluxDB.Collector" Version="1.1.0" />
     <PackageReference Include="MQTTnet" Version="2.8.5" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
